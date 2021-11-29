@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import calculateWorkingTime from "../helper/calculateWorkingTime";
 import isTimecardStatus, { TypeTimecard } from "../helper/isTimecardStatus";
-import pushLINE from "../helper/pushLINE";
+// import pushLINE from "../helper/pushLINE";
 
 class Timecard {
   db: AWS.DynamoDB.DocumentClient;
@@ -186,20 +186,20 @@ class Timecard {
           })
           .promise();
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        pushLINE(
-          `${user}さんが${workspot}で${attendance.slice(
-            4,
-            6
-          )}月${attendance.slice(6, 8)}日${attendance.slice(
-            8,
-            10
-          )}時${attendance.slice(10, 12)}分に出勤しました`
-        );
+        // pushLINE(
+        //   `${user}さんが${workspot}で${attendance.slice(
+        //     4,
+        //     6
+        //   )}月${attendance.slice(6, 8)}日${attendance.slice(
+        //     8,
+        //     10
+        //   )}時${attendance.slice(10, 12)}分に出勤しました`
+        // );
         return { message: "Insert Success" };
       } else {
         const results = calculateWorkingTime(latestRecord.attendance);
-        const user = username;
-        const leave = results.leave;
+        // const user = username;
+        // const leave = results.leave;
         const params = {
           TableName: process.env.TABLE_NAME || "Timecards",
           Key: {
@@ -225,12 +225,12 @@ class Timecard {
         };
         await this.db.update(params).promise();
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        pushLINE(
-          `${user}さんが${leave.slice(4, 6)}月${leave.slice(
-            6,
-            8
-          )}日${leave.slice(8, 10)}時${leave.slice(10, 12)}分に退勤しました`
-        );
+        // pushLINE(
+        //   `${user}さんが${leave.slice(4, 6)}月${leave.slice(
+        //     6,
+        //     8
+        //   )}日${leave.slice(8, 10)}時${leave.slice(10, 12)}分に退勤しました`
+        // );
         return { message: "Upadate Success" };
       }
     } catch (err) {
